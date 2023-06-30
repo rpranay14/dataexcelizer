@@ -19,8 +19,17 @@ const upload = multer({
     storage: storage
 })
 
-// Define the route for uploading employee data
+
 employeeRouter.route("/")
+    // Define the route to get  employee data
+    .get((req, res, next) => {
+        EMPLOYEE.find({}).then((employees) => {
+            res.status(200).json({ success: true, employees: employees })
+
+        }).catch((error) => res.status(500).json({ success: false, msg: error }))
+    })
+
+    // Define the route for uploading employee data
     .post(upload.single(), (req, res, next) => {
         const file = req.file;
         // Read the uploaded Excel file
