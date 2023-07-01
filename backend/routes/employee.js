@@ -30,8 +30,9 @@ employeeRouter.route("/")
     })
 
     // Define the route for uploading employee data
-    .post(upload.single(), (req, res, next) => {
+    .post(upload.single('file'), (req, res, next) => {
         const file = req.file;
+        console.log(file)
         // Read the uploaded Excel file
         const workbook = xlsx.readFile(file.path);
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -54,8 +55,11 @@ employeeRouter.route("/")
 
         // Insert employee data into the database
         EMPLOYEE.insertMany(employees)
-            .then(() => {
-                res.status(200).json({ success: true, message: 'Data imported successfully' });
+            .then((employees) => {
+                EMPLOYEE.find({}).then((employees) => {
+                    res.status(200).json({ success: true, employees: employees })
+
+                }).catch((error) => res.status(500).json({ success: false, msg: error }))
             })
             .catch(error => {
                 console.error('Error importing data:', error);
@@ -66,6 +70,34 @@ employeeRouter.route("/")
 
 
 
-    }
-    )
+    })
+employeeRouter.route('/:employeeid')
+    .put((req, res, next) => {
+        EMPLOYEE.findByIdAndUpdate(req.params.employeeid, {
+            $set: req.body
+        }, { new: true })
+            .then((product) => {
+                EMPLOYEE.find({}).then((employees) => {
+                    res.status(200).json({ success: true, employees: employees })
+
+                }).catch((error) => res.status(500).json({ success: false, msg: error }))
+            }).catch(error => {
+                console.error('Error importing data:', error);
+                res.status(500).json({ success: false, error: 'An error occurred while importing data' });
+            });
+
+    })
+    .delete((req, res, next) => {
+        EMPLOYEE.findByIdAndRemove(req.params.employeeid)
+            .then((product) => {
+                EMPLOYEE.find({}).then((employees) => {
+                    res.status(200).json({ success: true, employees: employees })
+
+                }).catch((error) => res.status(500).json({ success: false, msg: error }))
+            }).catch(error => {
+                console.error('Error importing data:', error);
+                res.status(500).json({ success: false, error: 'An error occurred while importing data' });
+            });
+
+    })
 module.exports = employeeRouter;    
