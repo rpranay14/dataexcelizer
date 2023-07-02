@@ -14,6 +14,7 @@ import { BiFilterAlt } from 'react-icons/bi';
 import FilterModalComponent from './FilterModalComponent';
 import AddNewEmployeeModal from './AddNewEmployeeModal';
 import EditEmployeeComponent from './EditEmployeeComponent';
+import ChartComponent from './ChartComponent';
 
 
 const EmpTableComponent = () => {
@@ -26,6 +27,7 @@ const EmpTableComponent = () => {
     const employees = useSelector((state) => state.employees.employees);
     const [sortby, setsortby] = useState('salary')
     const [sortedData, setSortedData] = useState([])
+    const [showChart, setShowChart] = useState(true)
 
 
     useEffect(() => {
@@ -102,9 +104,10 @@ const EmpTableComponent = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            {employees ? showChart ? <ChartComponent employeeData={employees} /> : <></> : <p>Loading</p>}
             {showfiltermodal ? <FilterModalComponent setfiltermodal={(value) => { setshowfiltermodal(value) }} /> : <></>}
             {showaddnewform ? <AddNewEmployeeModal setshowaddnewform={(value) => { setshowaddnewform(value) }} /> : <></>}
-            {showeditmodal ? <EditEmployeeComponent employeeEdit={employeeEdit}/>:<></>}
+            {showeditmodal ? <EditEmployeeComponent employeeEdit={employeeEdit} /> : <></>}
 
         </div>
     )
