@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { addFilters } from '../../redux/ActionCreators'
+import { useDispatch, useSelector } from 'react-redux';
+import { addFilters, updateFilter } from '../../redux/ActionCreators';
 
 const SalaryComponent = () => {
+    const filter = useSelector(state => state.filter.filterarray)
+    console.log(filter)
     const [minsalary, setminsalary] = useState('')
     const [maxsalary, setmaxsalary] = useState('')
     const dispatch = useDispatch();
@@ -13,8 +15,20 @@ const SalaryComponent = () => {
             salary: { minsalary, maxsalary }
         }
 
+
         console.log(s)
-        dispatch(addFilters(s))
+        if (filter.length !== 0) {
+            const hasStatus = filter.some((obj) => 'salary' in obj);
+            if (hasStatus) {
+                dispatch(updateFilter(s))
+            }
+            else {
+                dispatch(addFilters(s))
+            }
+        }
+        else {
+            dispatch(addFilters(s))
+        }
 
     }
     return (

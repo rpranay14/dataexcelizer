@@ -10,6 +10,12 @@ const FilterModalComponent = (props) => {
 
 
     const [sectionclicked, setsectionclicked] = useState(0)
+    const onApplyButtonPressed = () => {
+        props.applyFilter(false)
+        props.setfiltermodal(false)
+
+
+    }
     return ReactDom.createPortal(
         <div className='fixed top-0 bottom-0 right-0 left-0 bg-black bg-opacity-50'>
 
@@ -40,7 +46,7 @@ const FilterModalComponent = (props) => {
 
                 <div className="flex justify-end items-center mx-2 mt-2 mb-2">
                     <button onClick={() => props.setfiltermodal(false)} className="border border-black px-6 py-1">Cancel</button>
-                    <button className='bg-[#e65100] text-white px-8 py-1 rounded-sm'>Apply</button>
+                    <button onClick={() => onApplyButtonPressed()} className='bg-[#e65100] text-white px-8 py-1 rounded-sm'>Apply</button>
                 </div>
             </div>
 

@@ -8,7 +8,11 @@ export const addFilters = (filter) => ({
     type: ActionTypes.ADD_FILTERS,
     payload: filter
 })
+export const updateFilter = (filter) => ({
+    type: ActionTypes.UPDATE_FILTER,
+    payload: filter
+})
 export const deleteFilters = (filter) => ({
-    type: ActionTypes.ADD_FILTERS,
+    type: ActionTypes.DELETE_FILTERS,
     payload: filter
 })

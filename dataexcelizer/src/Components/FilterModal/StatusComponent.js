@@ -1,17 +1,43 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addFilters } from '../../redux/ActionCreators';
+import { useDispatch, useSelector } from 'react-redux';
+import { addFilters, updateFilter } from '../../redux/ActionCreators';
 
 const StatusComponent = (props) => {
+
+
+    const filter = useSelector(state => state.filter.filterarray)
     const [selectedvalue, setselectedvalue] = useState();
     const dispatch = useDispatch()
     const handleRadioChange = (event) => {
+        let foundstate = false
+        console.log(filter)
         setselectedvalue(event.target.value);
         const s = {
             status: event.target.value
         }
-        console.log(s)
-        dispatch(addFilters(s))
+        console.log(filter)
+        if (filter.length !== 0) {
+            const hasStatus = filter.some((obj) => 'status' in obj);
+
+            if (hasStatus) {
+                console.log('3st')
+
+                dispatch(updateFilter(s))
+            }
+            else {
+                console.log('4st')
+
+                dispatch(addFilters(s))
+            }
+
+
+        }
+        else {
+            console.log('12st')
+            dispatch(addFilters(s))
+        }
+
+
 
 
     };

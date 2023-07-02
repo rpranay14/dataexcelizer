@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
+import { axiosapi } from '../api/axiosapi'
+import { useDispatch } from 'react-redux';
+import { addEmployees } from '../redux/ActionCreators';
 
-function AddNewEmployeeModal({ closeModal }) {
+function AddNewEmployeeModal(props) {
+    const dispatch = useDispatch()
     const [employeeData, setEmployeeData] = useState({
         employeeId: '',
         employeeName: '',
@@ -21,9 +25,25 @@ function AddNewEmployeeModal({ closeModal }) {
         }));
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(employeeData)
+        console.log(employeeData.joiningDate)
+        const employee = {
+            employeeId: employeeData.employeeId,
+            employeeName: employeeData.employeeName,
+            employeeStatus: employeeData.employeeStatus,
+            joiningDate: new Date(employeeData.joiningDate.split('-').reverse().join("-")),
+            birthDate: new Date(employeeData.birthDate.split('-').reverse().join("-")),
+            skills: employeeData.skills,
+            salaryDetails: employeeData.salary,
+            address: employeeData.address,
+        }
+
+        console.log(employee)
+        const response = await axiosapi.post('employee/addemployee', { employee })
+        console.log(response.data)
+        dispatch(addEmployees(response.data.employees))
+        props.setshowaddnewform(false)
 
         // Perform form submission or data handling here
         // Close the modal after form submission
@@ -168,7 +188,7 @@ function AddNewEmployeeModal({ closeModal }) {
                         <button
                             className="px-4 py-2 mr-2 bg-gray-500 text-white rounded hover:bg-gray-700"
                             type="button"
-                            onClick={closeModal}
+                            onClick={() => { props.setshowaddnewform(false) }}
                         >
                             Cancel
                         </button>

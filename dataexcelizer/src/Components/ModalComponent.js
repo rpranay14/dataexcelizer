@@ -7,12 +7,15 @@ import { useDispatch } from 'react-redux';
 import { addEmployees } from '../redux/ActionCreators';
 
 const ModalComponent = (props) => {
+    const [progress, setProgress] = useState(0);
     const [file, setfile] = useState();
+
     const dispatch = useDispatch();
 
 
     const onDrop = useCallback(async (acceptedFiles) => {
         setfile(acceptedFiles[0]);
+        console.log(acceptedFiles[0])
 
         const formData = new FormData();
         acceptedFiles.forEach((file) => {
@@ -50,6 +53,7 @@ const ModalComponent = (props) => {
                     <p>Import File</p>
                     <AiFillCloseCircle onClick={() => props.onClick(false)} className='cursor-pointer  text-[#e65100] right-4 h-6 w-6' />
                 </div>
+                {file ? <p className="mx-8 mb-2">{file.name}</p> : <></>}
 
                 <div  {...getRootProps()} className={`dropzone border border-dashed mx-8 p-24 ${isDragActive ? 'active' : ''}`}>
                     <input {...getInputProps()} />

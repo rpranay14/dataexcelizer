@@ -14,11 +14,11 @@ const employeeSchema = new Schema({
         required: true
     },
     joiningDate: {
-        type: String,
+        type: Date,
         required: true
     },
     birthDate: {
-        type: String,
+        type: Date,
         required: true
     },
     skills: {
@@ -26,7 +26,7 @@ const employeeSchema = new Schema({
         required: true
     },
     salaryDetails: {
-        type: String,
+        type: Number,
         required: true
     },
     address: {

@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import {axiosapi} from '../api/axiosapi'
+import { axiosapi } from '../api/axiosapi'
+import { useDispatch } from 'react-redux';
+import { addEmployees } from '../redux/ActionCreators';
 
 function EditEmployeeComponent(props) {
+    const dispatch = useDispatch()
+    console.log(typeof props.employeeEdit.salaryDetails)
     const [employeeData, setEmployeeData] = useState({
         employeeId: props.employeeEdit.employeeId,
-        employeeName:props.employeeEdit.employeeName,
+        employeeName: props.employeeEdit.employeeName,
         employeeStatus: props.employeeEdit.employeeStatus,
-        joiningDate:props.employeeEdit.joiningDate,
-        birthDate: props.employeeEdit.birthDate,
+        joiningDate: new Date(props.employeeEdit.joiningDate).toISOString().split("T")[0],
+        birthDate: new Date(props.employeeEdit.birthDate).toISOString().split("T")[0],
         skills: props.employeeEdit.skills,
-        salary: props.employeeEdit.salary,
+        salaryDetails: props.employeeEdit.salaryDetails,
         address: props.employeeEdit.address,
     });
 
@@ -22,11 +26,25 @@ function EditEmployeeComponent(props) {
         }));
     };
 
-    const handleSubmit =async (event) => {
+    const handleSubmit = async (event) => {
+        const updatedEmployee = {
+            employeeId: employeeData.employeeId,
+            employeeName: employeeData.employeeName,
+            employeeStatus: employeeData.employeeStatus,
+            joiningDate: new Date(employeeData.joiningDate.split('-').reverse().join("-")),
+            birthDate: new Date(employeeData.birthDate.split('-').reverse().join("-")),
+            skills: employeeData.skills,
+            salaryDetails: employeeData.salaryDetails,
+            address: employeeData.address,
+        }
+        console.log(updatedEmployee)
         event.preventDefault();
-        const response=await axiosapi.put(`employee/${props.employeeEdit._id}`,{employeeData})
+        const response = await axiosapi.put(`employee/${props.employeeEdit._id}`, { updatedEmployee })
         console.log(response.data)
-        console.log(employeeData)
+        dispatch(addEmployees(response.data.employees))
+        props.toggleEdit(false)
+
+
 
         // Perform form submission or data handling here
         // Close the modal after form submission
@@ -147,7 +165,7 @@ function EditEmployeeComponent(props) {
                                     type="number"
                                     id="salary"
                                     name="salary"
-                                    value={employeeData.salary}
+                                    value={employeeData.salaryDetails}
                                     onChange={handleInputChange}
                                     required
                                 />
@@ -171,7 +189,8 @@ function EditEmployeeComponent(props) {
                         <button
                             className="px-4 py-2 mr-2 bg-gray-500 text-white rounded hover:bg-gray-700"
                             type="button"
-                           
+                            onClick={() => { props.toggleEdit(false) }}
+
                         >
                             Cancel
                         </button>
