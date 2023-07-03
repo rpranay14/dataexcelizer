@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 const employeeSchema = new Schema({
     employeeId: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     employeeName: {
         type: String,
