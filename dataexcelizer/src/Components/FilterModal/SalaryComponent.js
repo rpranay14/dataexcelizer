@@ -4,9 +4,9 @@ import { addFilters, updateFilter } from '../../redux/ActionCreators';
 
 const SalaryComponent = () => {
     const filter = useSelector(state => state.filter.filterarray)
-    console.log(filter)
-    const [minsalary, setminsalary] = useState('')
-    const [maxsalary, setmaxsalary] = useState('')
+    console.log(filter.map((obj) => obj.salary).filter(Boolean)[0])
+    const [minsalary, setminsalary] = useState()
+    const [maxsalary, setmaxsalary] = useState()
     const dispatch = useDispatch();
 
     const handleapply = () => {

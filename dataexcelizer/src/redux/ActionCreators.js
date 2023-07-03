@@ -16,3 +16,7 @@ export const deleteFilters = (filter) => ({
     type: ActionTypes.DELETE_FILTERS,
     payload: filter
 })
+export const clearFilters = () => ({
+    type: ActionTypes.CLEAR_FILTERS
+
+})

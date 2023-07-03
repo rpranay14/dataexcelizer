@@ -52,8 +52,8 @@ function AddNewEmployeeModal(props) {
     return ReactDOM.createPortal(
         <div className='fixed top-0 bottom-0 right-0 left-0 bg-black bg-opacity-50'>
 
-            <div className="bg-white fixed top-[10%]  left-[30%] border-black rounded-md w-[50%] overflow-y-scroll ">
-                <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
+            <div className="bg-white fixed top-[10%] left-[10%] right-[10%] max-w-md mx-auto border-black rounded-md overflow-y-scroll p-5">
+                <form className="max-w-full mx-4" onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <div className="flex">
                             <div className="w-1/2 pr-2">

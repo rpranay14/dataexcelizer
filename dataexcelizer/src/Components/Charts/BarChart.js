@@ -51,9 +51,10 @@ const BarChart = () => {
     }, [employeeData]);
 
     return (
-        <div className="w-[50%]">
+        <div className="w-full lg:w-1/2">
             <canvas ref={chartRef} id="myChart" />
         </div>
+
     )
 }
 

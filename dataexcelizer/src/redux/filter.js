@@ -36,6 +36,9 @@ export const FILTERS = (state = { filterarray: [] }, action) => {
             const farray = state.filterarray.filter(item => item !== action.payload);
             return { ...state, filterarray: farray }
 
+        case ActionTypes.CLEAR_FILTERS:
+            return { ...state, filterarray: [] }
+
         default:
             return state
 

@@ -98,70 +98,174 @@ const EmpTableComponent = () => {
 
     }
     const handleRemoveFilter = (filterss) => {
+        dispatch(deleteFilters(filterss));
+        let newArrayOfEmployees = employees
+        console.log("remo", filterss)
+        if (filterss.status) {
+            console.log("This is remo 3", filter)
+            const salaryvalue = filter.map((obj) => obj.salary).filter(Boolean)[0];
+            if (salaryvalue) {
+                console.log("This is 3", filter)
+                newArrayOfEmployees = newArrayOfEmployees.filter((x) => x.salaryDetails >= salaryvalue.minsalary && x.salaryDetails <= salaryvalue.maxsalary)
+            }
+        }
+        else {
+            const statusvalue = filter.map((obj) => obj.status).filter(Boolean)[0];
+            if (statusvalue) {
+                newArrayOfEmployees = newArrayOfEmployees.filter((x) => x.employeeStatus === statusvalue)
+                console.log("This is 2", sortedData.filter((x) => x.employeeStatus === statusvalue))
+            }
 
-        dispatch(deleteFilters(filterss))
+        }
+        setSortedData(newArrayOfEmployees)
+
+
+
+
+
 
         console.log(filter)
     }
 
 
     return (
-        <div className='mt-12'>
-            <div className="flex justify-between ml-4 ">
-                <div className="flex gap-2 ">
-                    <button onClick={() => { setshowfiltermodal(true) }} className='border border-gray-700 bg-gray-100 text-gray-700 px-3 rounded-sm py-1 flex gap-2 flex-wrap mb-4 items-center'>{filter.length !== 0 ? <p className='text-[#ef6c00]'>{filter.length}</p> : <BiFilterAlt className="h-4 w-4" />}Filters</button>
-                    {filter.length !== 0 ?
+        <div className="mt-12">
+            <div className="flex flex-col lg:flex-row justify-between items-center mx-4">
+                <div className="flex gap-2 mb-4">
+                    <button
+                        onClick={() => { setshowfiltermodal(true) }}
+                        className="border border-gray-700 bg-gray-100 text-gray-700 px-3 rounded-sm py-1 flex gap-2 flex-wrap items-center"
+                    >
+                        {filter.length !== 0 ? (
+                            <p className="text-[#ef6c00]">{filter.length}</p>
+                        ) : (
+                            <BiFilterAlt className="h-4 w-4" />
+                        )}
+                        Filters
+                    </button>
+                    {filter.length !== 0 ? (
                         filter.map((x) => (
-                            <button onClick={() => { handleRemoveFilter(x) }} className='border   bg-[#ef6c00] text-white px-3 rounded-md py-1 flex gap-2 flex-wrap mb-4 items-center'>{Object.keys(x)}<AiOutlineClose className="h-4 w-4" /></button>
-
+                            <button
+                                onClick={() => {
+                                    handleRemoveFilter(x)
+                                }}
+                                className="border bg-[#ef6c00] text-white px-3 rounded-md py-1 flex gap-2 flex-wrap mb-4 items-center"
+                            >
+                                {Object.keys(x)}
+                                <AiOutlineClose className="h-4 w-4" />
+                            </button>
                         ))
-                        : <></>}
+                    ) : (
+                        <></>
+                    )}
                 </div>
 
-                <button onClick={() => { setshowaddnewform(true) }} className='border border-gray-700 bg-gray-100 text-gray-700 px-3 rounded-sm py-1 flex gap-2 flex-wrap mb-4 items-center'>Add New</button>
+                <button
+                    onClick={() => { setshowaddnewform(true) }}
+                    className="border border-gray-700 bg-gray-100 text-gray-700 px-3 rounded-sm py-1 flex gap-2 flex-wrap mb-4 items-center"
+                >
+                    Add New
+                </button>
             </div>
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>employeeId</TableCell>
-                            <TableCell>employeeName</TableCell>
-                            <TableCell>employeeStatus</TableCell>
-                            <TableCell>joiningDate</TableCell>
-                            <TableCell>birthDate</TableCell>
-                            <TableCell>skills</TableCell>
-                            <TableCell>salaryDetails</TableCell>
-                            <TableCell>address</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {sortedData.length !== 0 ? sortedData?.map(row => (
-                            <TableRow key={row.employeeId}>
-                                <TableCell>{row.employeeId}</TableCell>
-                                <TableCell>{row.employeeName}</TableCell>
-                                <TableCell>{row.employeeStatus}</TableCell>
-                                <TableCell>{new Date(row.joiningDate).toLocaleDateString()}</TableCell>
-                                <TableCell>{new Date(row.birthDate).toLocaleDateString()}</TableCell>
-                                <TableCell>{row.skills}</TableCell>
-                                <TableCell>{row.salaryDetails}</TableCell>
-                                <TableCell>{row.address}</TableCell>
-                                <TableCell><button onClick={() => handleEdit(row)} className="mr-1 bg-blue-500 text-white px-1 py-1 rounded-sm">Edit</button><button onClick={() => handleDelete(row._id)} className="mr-1 px-1 py-1 rounded-sm bg-red-500 text-white">Delete</button></TableCell>
 
-                            </TableRow>)) : (
+            <div className="overflow-x-auto">
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
                             <TableRow>
-                                <TableCell colSpan={8}>Loading...</TableCell>
+                                <TableCell>employeeId</TableCell>
+                                <TableCell>employeeName</TableCell>
+                                <TableCell>employeeStatus</TableCell>
+                                <TableCell>joiningDate</TableCell>
+                                <TableCell>birthDate</TableCell>
+                                <TableCell>skills</TableCell>
+                                <TableCell>salaryDetails</TableCell>
+                                <TableCell>address</TableCell>
                             </TableRow>
-                        )
-                        }
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            {employees ? showChart ? <ChartComponent employeeData={employees} /> : <></> : <p>Loading</p>}
-            {showfiltermodal ? <FilterModalComponent applyFilter={(value) => handleApplyfilter(value)} setfiltermodal={(value) => { setshowfiltermodal(value) }} /> : <></>}
-            {showaddnewform ? <AddNewEmployeeModal setshowaddnewform={(value) => { setshowaddnewform(value) }} /> : <></>}
-            {showeditmodal ? <EditEmployeeComponent toggleEdit={(value) => setshoweditmodal(value)} employeeEdit={employeeEdit} /> : <></>}
+                        </TableHead>
+                        <TableBody>
+                            {sortedData.length !== 0 ? (
+                                sortedData?.map((row) => (
+                                    <TableRow key={row.employeeId}>
+                                        <TableCell>{row.employeeId}</TableCell>
+                                        <TableCell>{row.employeeName}</TableCell>
+                                        <TableCell>{row.employeeStatus}</TableCell>
+                                        <TableCell>
+                                            {new Date(row.joiningDate).toLocaleDateString()}
+                                        </TableCell>
+                                        <TableCell>
+                                            {new Date(row.birthDate).toLocaleDateString()}
+                                        </TableCell>
+                                        <TableCell>{row.skills}</TableCell>
+                                        <TableCell>{row.salaryDetails}</TableCell>
+                                        <TableCell>{row.address}</TableCell>
+                                        <TableCell>
+                                            <button
+                                                onClick={() => handleEdit(row)}
+                                                className="mr-1 bg-blue-500 text-white px-1 py-1 rounded-sm"
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(row._id)}
+                                                className="mr-1 px-1 py-1 rounded-sm bg-red-500 text-white"
+                                            >
+                                                Delete
+                                            </button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={8}>No Data</TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
 
+            {employees ? (
+                showChart ? (
+                    <ChartComponent employeeData={employees} />
+                ) : (
+                    <></>
+                )
+            ) : (
+                <p>Loading</p>
+            )}
+
+            {showfiltermodal ? (
+                <FilterModalComponent
+                    applyFilter={(value) => handleApplyfilter(value)}
+                    setfiltermodal={(value) => {
+                        setshowfiltermodal(value);
+                    }}
+                />
+            ) : (
+                <></>
+            )}
+
+            {showaddnewform ? (
+                <AddNewEmployeeModal
+                    setshowaddnewform={(value) => {
+                        setshowaddnewform(value);
+                    }}
+                />
+            ) : (
+                <></>
+            )}
+
+            {showeditmodal ? (
+                <EditEmployeeComponent
+                    toggleEdit={(value) => setshoweditmodal(value)}
+                    employeeEdit={employeeEdit}
+                />
+            ) : (
+                <></>
+            )}
         </div>
+
     )
 }
 

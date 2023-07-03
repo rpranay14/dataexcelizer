@@ -6,7 +6,7 @@ const StatusComponent = (props) => {
 
 
     const filter = useSelector(state => state.filter.filterarray)
-    const [selectedvalue, setselectedvalue] = useState();
+    const [selectedvalue, setselectedvalue] = useState(filter.map((obj) => obj.status).filter(Boolean)[0]);
     const dispatch = useDispatch()
     const handleRadioChange = (event) => {
         let foundstate = false
