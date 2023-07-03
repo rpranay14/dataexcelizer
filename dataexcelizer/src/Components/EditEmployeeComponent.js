@@ -5,14 +5,15 @@ import { useDispatch } from 'react-redux';
 import { addEmployees } from '../redux/ActionCreators';
 
 function EditEmployeeComponent(props) {
+    console.log()
     const dispatch = useDispatch()
     console.log(typeof props.employeeEdit.salaryDetails)
     const [employeeData, setEmployeeData] = useState({
         employeeId: props.employeeEdit.employeeId,
         employeeName: props.employeeEdit.employeeName,
         employeeStatus: props.employeeEdit.employeeStatus,
-        joiningDate: new Date(props.employeeEdit.joiningDate).toISOString().split("T")[0],
-        birthDate: new Date(props.employeeEdit.birthDate).toISOString().split("T")[0],
+        joiningDate: new Date(new Date((new Date(props.employeeEdit.joiningDate)).getTime() + 330 * 60 * 1000)).toISOString().split("T")[0],
+        birthDate: new Date(new Date((new Date(props.employeeEdit.birthDate)).getTime() + 330 * 60 * 1000)).toISOString().split("T")[0],
         skills: props.employeeEdit.skills,
         salaryDetails: props.employeeEdit.salaryDetails,
         address: props.employeeEdit.address,
@@ -31,18 +32,30 @@ function EditEmployeeComponent(props) {
             employeeId: employeeData.employeeId,
             employeeName: employeeData.employeeName,
             employeeStatus: employeeData.employeeStatus,
-            joiningDate: new Date(employeeData.joiningDate.split('-').reverse().join("-")),
-            birthDate: new Date(employeeData.birthDate.split('-').reverse().join("-")),
+            joiningDate: employeeData.joiningDate,
+            birthDate: employeeData.birthDate,
             skills: employeeData.skills,
             salaryDetails: employeeData.salaryDetails,
             address: employeeData.address,
         }
         console.log(updatedEmployee)
         event.preventDefault();
-        const response = await axiosapi.put(`employee/${props.employeeEdit._id}`, { updatedEmployee })
-        console.log(response.data)
-        dispatch(addEmployees(response.data.employees))
-        props.toggleEdit(false)
+        try {
+            const response = await axiosapi.put(`employee/${props.employeeEdit._id}`, { updatedEmployee })
+            console.log(response.data)
+            if (response.data.success) {
+                dispatch(addEmployees(response.data.employees))
+                props.toggleEdit(false)
+            }
+            else {
+                alert(response.data.msg)
+            }
+
+        }
+        catch (error) {
+            alert(error);
+
+        }
 
 
 

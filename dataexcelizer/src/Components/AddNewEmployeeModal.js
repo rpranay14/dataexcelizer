@@ -27,23 +27,35 @@ function AddNewEmployeeModal(props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(employeeData.joiningDate)
+        console.log(employeeData.birthDate)
         const employee = {
             employeeId: employeeData.employeeId,
             employeeName: employeeData.employeeName,
             employeeStatus: employeeData.employeeStatus,
-            joiningDate: new Date(employeeData.joiningDate.split('-').reverse().join("-")),
-            birthDate: new Date(employeeData.birthDate.split('-').reverse().join("-")),
+            joiningDate: employeeData.joiningDate,
+            birthDate: employeeData.birthDate,
             skills: employeeData.skills,
             salaryDetails: employeeData.salary,
             address: employeeData.address,
         }
 
         console.log(employee)
-        const response = await axiosapi.post('employee/addemployee', { employee })
-        console.log(response.data)
-        dispatch(addEmployees(response.data.employees))
-        props.setshowaddnewform(false)
+        try {
+            const response = await axiosapi.post('employee/addemployee', { employee })
+            console.log(response.data)
+            if (response.data.success) {
+                dispatch(addEmployees(response.data.employees))
+                props.setshowaddnewform(false)
+            }
+            else {
+                alert(response.data.msg)
+            }
+
+        }
+        catch (error) {
+            alert(error)
+        }
+
 
         // Perform form submission or data handling here
         // Close the modal after form submission

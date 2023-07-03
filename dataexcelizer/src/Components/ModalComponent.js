@@ -34,6 +34,7 @@ const ModalComponent = (props) => {
                 });
                 console.log(response.data.employees)
                 dispatch(addEmployees(response.data.employees))
+                props.onClick(false)
 
                 // Clear the selected file after successful upload
 
@@ -41,6 +42,8 @@ const ModalComponent = (props) => {
                 console.error('Error uploading file:', error);
             }
         }
+
+
     }
 
 
@@ -48,17 +51,18 @@ const ModalComponent = (props) => {
     return ReactDom.createPortal(
         <div className='fixed top-0 bottom-0 right-0 left-0 bg-black bg-opacity-50'>
 
-            <div className="bg-white fixed top-[30%]  left-[30%] border-black rounded-md ">
+            <div className="bg-white fixed top-[30%]  lg:left-[30%] border-black rounded-md ">
                 <div className="flex justify-between items-center border-b-2 mb-5 p-2 border-black">
                     <p>Import File</p>
                     <AiFillCloseCircle onClick={() => props.onClick(false)} className='cursor-pointer  text-[#e65100] right-4 h-6 w-6' />
                 </div>
                 {file ? <p className="mx-8 mb-2">{file.name}</p> : <></>}
 
-                <div  {...getRootProps()} className={`dropzone border border-dashed mx-8 p-24 ${isDragActive ? 'active' : ''}`}>
+                <div  {...getRootProps()} className={`dropzone cursor-pointer border-[#e65100] border border-dashed mx-8 p-24 ${isDragActive ? 'active' : ''}`}>
                     <input {...getInputProps()} />
                     {isDragActive ? <p>Drop the files here...</p> : <p>Drag and drop files here or click to select files</p>}
                 </div>
+                <p className="  mx-8 mt-1 text-xs">Importing requires Microsoft Excel .xlsx format <a className='text-blue-500' href="/template.xlsx" target="_blank">Download Template</a></p>
                 <div className="flex justify-between items-center mx-2 mt-2 mb-2">
                     <button onClick={() => props.onClick(false)} className="border border-black px-6 py-1">Cancel</button>
                     <button onClick={() => handleImport()} className='bg-[#e65100] text-white px-8 py-1 rounded-sm'>Import</button>

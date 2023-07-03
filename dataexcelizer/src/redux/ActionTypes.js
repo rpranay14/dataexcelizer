@@ -3,3 +3,5 @@ export const ADD_FILTERS = 'ADD_FILTERS'
 export const UPDATE_FILTER = 'UPDATE_FILTER'
 export const DELETE_FILTERS = 'DELETE_FILTERS'
 export const CLEAR_FILTERS = 'CLEAR_FILTERS'
+export const TOGGLE_CHART = 'TOGGLE_CHART'
+

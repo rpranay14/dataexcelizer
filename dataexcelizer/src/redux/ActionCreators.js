@@ -20,3 +20,7 @@ export const clearFilters = () => ({
     type: ActionTypes.CLEAR_FILTERS
 
 })
+export const toggleChart = (value) => ({
+    type: ActionTypes.TOGGLE_CHART,
+    payload: value
+})

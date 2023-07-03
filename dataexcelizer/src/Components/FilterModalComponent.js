@@ -29,7 +29,7 @@ const FilterModalComponent = (props) => {
     return ReactDom.createPortal(
         <div className='fixed top-0 bottom-0 right-0 left-0 bg-black bg-opacity-50'>
 
-            <div className="bg-white fixed top-[10%]  left-[30%] border-black rounded-md w-[50%] ">
+            <div className="bg-white w-[100%]  fixed top-[20%]  lg:left-[30%] border-black rounded-md  md:w-[50%]  ">
                 <div className="flex justify-between items-center border-b-2  p-2 border-black">
                     <p>Filters</p>
                     <AiFillCloseCircle onClick={() => onCancelPressed()} className='cursor-pointer  text-[#e65100] right-4 h-6 w-6' />

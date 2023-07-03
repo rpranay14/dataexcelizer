@@ -65,7 +65,7 @@ employeeRouter.route("/")
                             employeeId: col[0],
                             employeeName: col[1],
                             employeeStatus: col[2],
-                            joiningDate: moment(col[3], 'DD-MM-YYYY').toDate(),
+                            joiningDate: col[3],
                             birthDate: col[4],
                             skills: col[5],
                             salaryDetails: col[6],
@@ -83,7 +83,7 @@ employeeRouter.route("/")
                         employeeId: col[0],
                         employeeName: col[1],
                         employeeStatus: col[2],
-                        joiningDate: moment(col[3], 'DD-MM-YYYY').toDate(),
+                        joiningDate: col[3],
                         birthDate: col[4],
                         skills: col[5],
                         salaryDetails: col[6],
@@ -114,7 +114,7 @@ employeeRouter.route("/")
             })
             .catch(error => {
                 console.error('Error importing data:', error);
-                res.status(500).json({ success: false, error: 'An error occurred while importing data' });
+                res.status(500).json({ success: false, msg: 'An error occurred while importing data' });
             });
 
 
@@ -148,7 +148,7 @@ employeeRouter.route('/:employeeid')
                 }).catch((error) => res.status(500).json({ success: false, msg: error }))
             }).catch(error => {
                 console.error('Error importing data:', error);
-                res.status(500).json({ success: false, error: 'An error occurred while importing data' });
+                res.status(500).json({ success: false, msg: 'An error occurred while importing data' });
             });
 
     })
@@ -161,7 +161,7 @@ employeeRouter.route('/:employeeid')
                 }).catch((error) => res.status(500).json({ success: false, msg: error }))
             }).catch(error => {
                 console.error('Error importing data:', error);
-                res.status(500).json({ success: false, error: 'An error occurred while importing data' });
+                res.status(500).json({ success: false, msg: 'An error occurred while importing data' });
             });
 
     })

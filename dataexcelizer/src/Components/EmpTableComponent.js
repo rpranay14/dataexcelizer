@@ -16,6 +16,7 @@ import FilterModalComponent from './FilterModalComponent';
 import AddNewEmployeeModal from './AddNewEmployeeModal';
 import EditEmployeeComponent from './EditEmployeeComponent';
 import ChartComponent from './ChartComponent';
+import moment from 'moment';
 
 
 
@@ -30,19 +31,29 @@ const EmpTableComponent = () => {
     const employees = useSelector((state) => state.employees.employees);
     const [sortby, setsortby] = useState('salary')
     const [sortedData, setSortedData] = useState([])
-    const [showChart, setShowChart] = useState(true)
+    const showChart = useSelector(state => state.chart.showChart)
 
 
     useEffect(() => {
 
         const getEmployee = async () => {
 
-            const result = await axiosapi.get("employee")
 
-            if (result.data.success) {
-                dispatch(addEmployees(result.data.employees))
+            try {
+                const result = await axiosapi.get("employee")
+
+                if (result.data.success) {
+                    dispatch(addEmployees(result.data.employees))
+
+                } else {
+                    alert(result.data.msg)
+                }
 
             }
+            catch (error) {
+                alert(error)
+            }
+
 
         }
         getEmployee()
@@ -92,9 +103,20 @@ const EmpTableComponent = () => {
 
     }
     const handleDelete = async (id) => {
-        const response = await axiosapi.delete(`employee/${id}`)
-        dispatch(addEmployees(response.data.employees))
-        console.log(response)
+        try {
+            const response = await axiosapi.delete(`employee/${id}`)
+            if (response.data.success) {
+                dispatch(addEmployees(response.data.employees))
+            }
+            else {
+                alert(response.data.msg)
+            }
+
+        }
+        catch (error) {
+            alert(error)
+        }
+
 
     }
     const handleRemoveFilter = (filterss) => {
@@ -191,10 +213,12 @@ const EmpTableComponent = () => {
                                         <TableCell>{row.employeeName}</TableCell>
                                         <TableCell>{row.employeeStatus}</TableCell>
                                         <TableCell>
-                                            {new Date(row.joiningDate).toLocaleDateString()}
+                                            {new Date((new Date(row.joiningDate)).getTime() + 330 * 60 * 1000).toLocaleDateString('en-In')}
+
+
                                         </TableCell>
                                         <TableCell>
-                                            {new Date(row.birthDate).toLocaleDateString()}
+                                            {new Date((new Date(row.birthDate)).getTime() + 330 * 60 * 1000).toLocaleDateString('en-In')}
                                         </TableCell>
                                         <TableCell>{row.skills}</TableCell>
                                         <TableCell>{row.salaryDetails}</TableCell>
