@@ -3,11 +3,8 @@ import * as ActionTypes from './ActionTypes';
 export const FILTERS = (state = { filterarray: [] }, action) => {
     switch (action.type) {
         case ActionTypes.ADD_FILTERS:
-
-            console.log("5rd", action.payload.status)
             const newArray = state.filterarray;
             newArray.push(action.payload)
-            console.log("1st", newArray)
             return { ...state, filterarray: newArray }
 
         case ActionTypes.UPDATE_FILTER:
@@ -32,7 +29,6 @@ export const FILTERS = (state = { filterarray: [] }, action) => {
             }
 
         case ActionTypes.DELETE_FILTERS:
-            console.log("hii", action.payload)
             const farray = state.filterarray.filter(item => item !== action.payload);
             return { ...state, filterarray: farray }
 
@@ -41,9 +37,5 @@ export const FILTERS = (state = { filterarray: [] }, action) => {
 
         default:
             return state
-
     }
-
-
-
 }

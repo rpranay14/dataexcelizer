@@ -5,9 +5,7 @@ import { useDispatch } from 'react-redux';
 import { addEmployees } from '../redux/ActionCreators';
 
 function EditEmployeeComponent(props) {
-    console.log()
     const dispatch = useDispatch()
-    console.log(typeof props.employeeEdit.salaryDetails)
     const [employeeData, setEmployeeData] = useState({
         employeeId: props.employeeEdit.employeeId,
         employeeName: props.employeeEdit.employeeName,
@@ -18,7 +16,6 @@ function EditEmployeeComponent(props) {
         salaryDetails: props.employeeEdit.salaryDetails,
         address: props.employeeEdit.address,
     });
-
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setEmployeeData((prevData) => ({
@@ -28,6 +25,7 @@ function EditEmployeeComponent(props) {
     };
 
     const handleSubmit = async (event) => {
+        event.preventDefault();
         const updatedEmployee = {
             employeeId: employeeData.employeeId,
             employeeName: employeeData.employeeName,
@@ -38,11 +36,8 @@ function EditEmployeeComponent(props) {
             salaryDetails: employeeData.salaryDetails,
             address: employeeData.address,
         }
-        console.log(updatedEmployee)
-        event.preventDefault();
         try {
             const response = await axiosapi.put(`employee/${props.employeeEdit._id}`, { updatedEmployee })
-            console.log(response.data)
             if (response.data.success) {
                 dispatch(addEmployees(response.data.employees))
                 props.toggleEdit(false)
@@ -56,16 +51,10 @@ function EditEmployeeComponent(props) {
             alert(error);
 
         }
-
-
-
-        // Perform form submission or data handling here
-        // Close the modal after form submission
     };
 
     return ReactDOM.createPortal(
         <div className='fixed top-0 bottom-0 right-0 left-0 bg-black bg-opacity-50'>
-
             <div className="bg-white fixed top-[10%] left-[10%] right-[10%] max-w-md mx-auto border-black rounded-md overflow-y-scroll p-5 ">
                 <form className="max-w-full mx-4" onSubmit={handleSubmit}>
                     <div className="mb-4">

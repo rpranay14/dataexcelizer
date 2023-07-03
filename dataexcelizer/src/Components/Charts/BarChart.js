@@ -9,7 +9,6 @@ const BarChart = () => {
     useEffect(() => {
         Chart.register(...registerables);
         const statusCount = {};
-        console.log(employeeData)
         employeeData.forEach((employee) => {
             if (statusCount.hasOwnProperty(employee.employeeStatus)) {
                 statusCount[employee.employeeStatus]++;
@@ -17,7 +16,7 @@ const BarChart = () => {
                 statusCount[employee.employeeStatus] = 1;
             }
         });
-        console.log(statusCount)
+
 
         const ctx = chartRef.current.getContext('2d');
 
@@ -35,7 +34,7 @@ const BarChart = () => {
                     {
                         label: 'Employee Count',
                         data: Object.values(statusCount),
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)', // Customize the bar color
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
                         borderWidth: 1
                     },
                 ],
