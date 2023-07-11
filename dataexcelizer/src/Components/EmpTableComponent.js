@@ -65,6 +65,7 @@ const EmpTableComponent = () => {
             newArrayOfEmployees = sortedData;
         }
         if (filter.length !== 0) {
+           
             const statusvalue = filter.map((obj) => obj.status).filter(Boolean)[0];
             const salaryvalue = filter.map((obj) => obj.salary).filter(Boolean)[0];
             if (statusvalue) {
